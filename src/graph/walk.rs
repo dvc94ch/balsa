@@ -4,7 +4,7 @@ use crate::follow::Follower;
 
 use super::{Atom, Bond, BridgePool};
 
-pub fn walk(atoms: &Vec<Atom>, follower: &mut impl Follower) {
+pub fn walk(atoms: &[Atom], follower: &mut impl Follower) {
     let mut atoms = atoms.into_iter().enumerate().collect::<HashMap<_, _>>();
 
     for i in 0..atoms.len() {

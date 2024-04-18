@@ -1,4 +1,4 @@
-use crate::feature::{AtomKind, Bracket, Selection, Shortcut};
+use crate::feature::{AtomKind, Bracket, Element, Selection, Shortcut, Symbol};
 
 use super::Bond;
 
@@ -35,6 +35,19 @@ impl Atom {
             kind: AtomKind::Bracket(bracket),
             bonds,
         }
+    }
+
+    pub fn element(&self) -> Option<Element> {
+        Some(match &self.kind {
+            AtomKind::Shortcut(e) => Element::from(e),
+            AtomKind::Selection(e) => Element::from(e),
+            AtomKind::Bracket(e) => match &e.symbol {
+                Symbol::Element(e) => e.clone(),
+                Symbol::Selection(e) => Element::from(e),
+                Symbol::Star => return None,
+            },
+            AtomKind::Star => return None,
+        })
     }
 
     pub fn valence(&self) -> u8 {
